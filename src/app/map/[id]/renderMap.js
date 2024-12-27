@@ -19,7 +19,7 @@ export default function RenderMap(){
             {fields.map((element, key) => {
                 return(
                 <div key={key} id={key} style={{padding:0, margin:0, display: "inlinineBlock", width: "fitContent", height: "fitContent"}}>
-                    <RenderField element={element} index={key-1}/>
+                    <RenderField element={element} index={key}/>
                 </div>
                 )
             })}

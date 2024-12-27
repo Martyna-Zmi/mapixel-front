@@ -6,12 +6,12 @@ export const MapContext = React.createContext(null)
 export default function MapProvider({children}){
     const [map, setMap] = useState(null)
     const [fields, setFields] = useState([])
+    const [fieldCatalog, setFieldCatalog] = useState([])
     const [selectedField, setSelectedField] = useState(0)
     const [toolField, setToolField] = useState(0)
 
-
     return(
-        <MapContext.Provider value={{map, setMap, fields, setFields, selectedField, setSelectedField, toolField, setToolField}}>
+        <MapContext.Provider value={{map, setMap, fields, setFields, selectedField, setSelectedField, toolField, setToolField, fieldCatalog, setFieldCatalog}}>
             {children}
         </MapContext.Provider>
     )

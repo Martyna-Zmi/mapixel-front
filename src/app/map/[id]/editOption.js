@@ -2,22 +2,20 @@
 
 import {useContext, useEffect, useState} from "react";
 import {MapContext} from "@/app/map/[id]/mapProvider";
-import './map.css';
 
-export default function RenderField({element, index}){ //rendering the field image
-    const {selectedField, setSelectedField} = useContext(MapContext)
+export default function RenderOption({element, index}){
+    const {toolField, setToolField} = useContext(MapContext)
     const [isClicked, setIsClicked] = useState(false)
 
-    const handleClick = () => {
+    function handleClick(){
         setIsClicked(true);
-        setSelectedField(index)
+        setToolField(index)
     }
-
     useEffect(() => {
-        if(selectedField !== index){
+        if(toolField !== index){
             setIsClicked(false)
         }
-    }, [selectedField])
+    }, [toolField])
 
     useEffect(() => {
         if(index === 0){
@@ -27,8 +25,9 @@ export default function RenderField({element, index}){ //rendering the field ima
 
     return(
         <>
+            <h4>{element.name}</h4>
             <img onClick={handleClick}
-                 alt="map field"
+                 alt="field edit option"
                  width="75px"
                  height="75px"
                  className={isClicked ? 'clicked' : ''}
