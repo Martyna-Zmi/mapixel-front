@@ -18,7 +18,8 @@ export default function SaveButton(){
         try {
             const response = await fetch(`http://localhost:8080/maps`, {
                 method: "PUT",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem("mapixelToken")}`},
                 body: JSON.stringify(updatedMap),
             });
             if (!response.ok) {

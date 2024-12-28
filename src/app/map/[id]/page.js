@@ -18,7 +18,13 @@ export default function Page(){
 
     const fetchMap = useCallback(async () => {
         try {
-            const response = await fetch(`http://localhost:8080/maps/${mapId}/with-fields`);
+            const response = await fetch(`http://localhost:8080/maps/${mapId}/with-fields`,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem("mapixelToken")}`
+                }
+            });
             if (!response.ok) {
                 setError(true)
             }
@@ -32,14 +38,20 @@ export default function Page(){
 
     const fetchFields = useCallback(async () => {
         try {
-            const response = await fetch(`http://localhost:8080/fields`);
+            const response = await fetch(`http://localhost:8080/fields`,{
+                method: 'GET',
+                    headers: {
+                    'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem("mapixelToken")}`
+                }
+            })
             if (!response.ok) {
                 setError(true)
             }
             const result = await response.json();
             setFieldCatalog(result)
         } catch (err) {
-            console.log(err.message)
+            console.log("roorr fetching")
             setError(true);
         }}, [])
 
@@ -49,11 +61,12 @@ export default function Page(){
         setLoading(false)
     }, []);
 
+    if(error){
+        return (
+            <p>Error</p>
+        )
+    }
     if(map!==null){
-        if(error){
-            //TODO: route to a 404 error page
-            return (<div>bad request</div>)
-        }
         return(
             <div>
                 <h1>Mapa: {map.name}</h1>
