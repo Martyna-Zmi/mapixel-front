@@ -2,7 +2,11 @@
 import {useState} from "react";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import {useRouter} from "next/navigation";
+
+
 export default function Page(){
+    const router = useRouter();
     const [loginError, setLoginError] = useState("");
 
     const LoginSchema = Yup.object().shape({
@@ -26,14 +30,14 @@ export default function Page(){
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('mapixelToken', data.token)
-                //TODO: redirect to main page
+                router.push('/main');
             } else if (response.status === 401 || response.status === 400) {
                 setLoginError("Niepoprawny login lub hasło")
             } else {
-                setLoginError("Błąd przy łączeniu z serwerem")
+                setLoginError("Błąd przy łączeniu z serwerem. Przepraszamy")
             }
-        } catch (error) {
-            setLoginError("Błąd przy łączeniu z serwerem")
+        } catch (err) {
+            setLoginError("Błąd przy łączeniu z serwerem. Przepraszamy")
         }
     }
     return (

@@ -2,10 +2,12 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import {useState} from "react";
+import {useRouter} from "next/navigation";
+
 
 export default function Page(){
     const [registerError, setRegisterError] = useState("")
-
+    const router = useRouter();
     const RegisterSchema = Yup.object().shape({
         email: Yup.string()
             .email('Invalid email address')
@@ -36,7 +38,7 @@ export default function Page(){
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('mapixelToken', data.token)
-                //TODO: redirect to main page
+                router.push('/main');
             } else if (response.status === 400) {
                 setRegisterError("Niepoprawne dane")
             }

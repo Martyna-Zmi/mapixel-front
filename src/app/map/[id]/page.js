@@ -2,7 +2,7 @@
 import {useCallback, useContext, useEffect, useState} from "react"
 import {MapContext} from "@/app/map/[id]/mapProvider";
 import {CircleLoader} from "react-spinners";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import RenderMap from "@/app/map/[id]/renderMap";
 import EditMap from "@/app/map/[id]/editMap";
 import EditButton from "@/app/map/[id]/editButton";
@@ -11,6 +11,7 @@ import SaveButton from "@/app/map/[id]/saveButton";
 export default function Page(){
     const params = useParams()
     const mapId = params.id
+    const router = useRouter()
 
     const {map, setMap, setFields, setFieldCatalog, fieldCatalog, toolField, selectedField} = useContext(MapContext)
     const [loading, setLoading] = useState(true);
@@ -32,7 +33,6 @@ export default function Page(){
             setMap(result)
             setFields(result.fields)
         } catch (err) {
-            console.log(err.message)
             setError(true)
         }}, []);
 
@@ -51,7 +51,6 @@ export default function Page(){
             const result = await response.json();
             setFieldCatalog(result)
         } catch (err) {
-            console.log("roorr fetching")
             setError(true);
         }}, [])
 
@@ -62,9 +61,7 @@ export default function Page(){
     }, []);
 
     if(error){
-        return (
-            <p>Error</p>
-        )
+        router.push('/not-found.js');
     }
     if(map!==null){
         return(
