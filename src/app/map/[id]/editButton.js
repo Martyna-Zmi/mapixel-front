@@ -2,15 +2,17 @@ import {useContext} from "react";
 import {MapContext} from "@/app/map/[id]/mapProvider";
 
 export default function EditButton(){ //edit button with logic
-    const {toolField, selectedField, fields, setFields, fieldCatalog} = useContext(MapContext)
+    const {toolField, selectedField, fields, setFields, fieldCatalog, unsavedChanges, setUnsavedChanges} = useContext(MapContext)
 
     function handleClick() {
-        const fieldToolObject = fieldCatalog[toolField];
+        const fieldToolObject = fieldCatalog[toolField]
 
-        const updatedFields = [...fields];
-        updatedFields[selectedField] = fieldToolObject;
+        const updatedFields = [...fields]
+        updatedFields[selectedField] = fieldToolObject
 
-        setFields(updatedFields);
+        setFields(updatedFields)
+        if(!unsavedChanges) setUnsavedChanges(true)
+
     }
     return(
         <>

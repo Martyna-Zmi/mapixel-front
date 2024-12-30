@@ -9,9 +9,9 @@ export default function MapProvider({children}){
     const [fieldCatalog, setFieldCatalog] = useState([])
     const [selectedField, setSelectedField] = useState(0)
     const [toolField, setToolField] = useState(0)
-
+    const [unsavedChanges, setUnsavedChanges] = useState(false)
     return(
-        <MapContext.Provider value={{map, setMap, fields, setFields, selectedField, setSelectedField, toolField, setToolField, fieldCatalog, setFieldCatalog}}>
+        <MapContext.Provider value={{map, setMap, fields, setFields, selectedField, setSelectedField, toolField, setToolField, fieldCatalog, setFieldCatalog, unsavedChanges, setUnsavedChanges}}>
             {children}
         </MapContext.Provider>
     )

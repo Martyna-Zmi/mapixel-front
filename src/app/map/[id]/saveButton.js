@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import {MapContext} from "@/app/map/[id]/mapProvider";
 
 export default function SaveButton(){
-    const {fields, map, setMap} = useContext(MapContext)
+    const {fields, map, setMap, setUnsavedChanges} = useContext(MapContext)
     const [error, setError] = useState(false)
     let errorMessage = ""
 
@@ -10,7 +10,8 @@ export default function SaveButton(){
         const fieldsIds = fields.map(field => field.id);
         const updatedMap = { ...map, fields: fieldsIds };
         setMap(updatedMap);
-        fetchSaveMap(updatedMap);
+        await fetchSaveMap(updatedMap)
+        setUnsavedChanges(false)
         alert("Zapisano stan mapy")
     }
 
@@ -24,7 +25,6 @@ export default function SaveButton(){
             });
             if (!response.ok) {
                 setError(true);
-                console.log(await response.json());
             }
         } catch (err) {
             errorMessage = err.message;

@@ -13,7 +13,7 @@ export default function Page(){
     const mapId = params.id
     const router = useRouter()
 
-    const {map, setMap, setFields, setFieldCatalog, fieldCatalog, toolField, selectedField} = useContext(MapContext)
+    const {map, setMap, setFields, setFieldCatalog, toolField, selectedField, unsavedChanges} = useContext(MapContext)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false)
 
@@ -67,6 +67,7 @@ export default function Page(){
         return(
             <div>
                 <h1>Mapa: {map.name}</h1>
+                <p>{unsavedChanges? "Masz niezapisane zmiany. Pamiętaj o regularnym zapisaniu zmian, aby nie utracić swojej mapy": "Stan mapy jest aktualny"}</p>
                 <h2>Obecny kafelek: {selectedField}</h2>
                 <h2>Obecne narzędzie: {toolField}</h2>
                 <EditButton/>
@@ -79,7 +80,7 @@ export default function Page(){
    else return (
        <div>
            <CircleLoader />
-           <p>Your world is loading...</p>
+           <p>Ładowanie mapy...</p>
        </div>
     )
 }

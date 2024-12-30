@@ -1,12 +1,11 @@
 "use client"
 import React, {useEffect, useState} from 'react';
-import {useParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 
 export default function Page(){
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    const params = useParams()
-    const id = params.id
+    const router = useRouter()
 
     useEffect(() => {
         const fetchThymeleafPage = async () => {
@@ -20,11 +19,11 @@ export default function Page(){
                     }
                     );
                 if (!response.ok) {
-                    setError(true)
+                    router.push('/login')
                 }
                 document.getElementById('thymeleaf-content').innerHTML = await response.text();
             } catch (error) {
-                setError(true)
+                router.push('/login')
             }
         };
         fetchThymeleafPage();
@@ -37,15 +36,11 @@ export default function Page(){
         )
     }
     if(error){
-        return (
-            <>
-                <p>error!</p>
-            </>
-        )
+        router.push('/not-found.js');
     }
     return (
         <div>
-            <h1>React-Thymeleaf Hybrid Page</h1>
+            <h1>Mapixel - stwórz własne, unikalne światy, w pixelowym stylu!</h1>
             <div id="thymeleaf-content"></div>
         </div>
     );

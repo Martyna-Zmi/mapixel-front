@@ -1,5 +1,5 @@
 "use client"
-import { Formik, Form, Field } from 'formik';
+import {Field, Form, Formik} from 'formik';
 import * as Yup from 'yup';
 import {useState} from "react";
 import {useRouter} from "next/navigation";
@@ -10,43 +10,69 @@ export default function Page(){
     const router = useRouter();
     const RegisterSchema = Yup.object().shape({
         email: Yup.string()
-            .email('Invalid email address')
-            .required('Email is required'),
+            .email('Nieprawidłowy format email')
+            .required('Email jest wymagany'),
         username: Yup.string()
-            .required('Name is required')
-            .min(3)
-            .max(20),
+            .required('Nazwa użytkownika jest wymagana')
+            .min(3, "Nazwa użytkownika powinna mieć co najmniej 3 znaki")
+            .max(20, "Nazwa użytkownika nie powinna być dłuższa niż 20 znaków"),
         password: Yup.string()
             .matches(
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,40}$/,
-                'Password must be 6-40 characters long, include upper and lower case letters, and at least one number'
+                'Hasło powinno mieć od 6 do 40 znaków, zawierać duże i małe litery oraz conajmniej jedną liczbę'
             )
-            .required('Password is required'),
+            .required('Hasło jest wymagane'),
         repeatPassword: Yup.string()
-            .oneOf([Yup.ref('password')], 'Passwords must match')
-            .required('Please confirm your password'),
+            .oneOf([Yup.ref('password')], 'Hasła muszą być takie same')
+            .required('Proszę potwierdzić hasło'),
     });
-    async function handleRegister({email, username, password}) {
+    async function checkIsEmailInUse(emailToCheck) {
         try {
-            const response = await fetch(`http://localhost:8080/users/create`, {
-                method: 'POST',
-                headers: {
+            const response = await fetch(`http://localhost:8080/users/emailfree`,{
+                method: 'GET',
+                    headers: {
                     'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem("mapixelToken")}`
                 },
-                body: JSON.stringify({email, password, username, isBanned: false, maps:[]}),
+                body: JSON.stringify({email: emailToCheck})
             });
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem('mapixelToken', data.token)
-                router.push('/main');
+                return data.inUse;
             } else if (response.status === 400) {
                 setRegisterError("Niepoprawne dane")
-            }
-            else {
+            } else {
                 setRegisterError("Błąd przy łączeniu z serwerem")
             }
         } catch (error) {
             setRegisterError("Błąd przy łączeniu z serwerem")
+        }
+    }
+    async function handleRegister({email, username, password}) {
+        const isInUse = await checkIsEmailInUse(email)
+        if(isInUse === null || isInUse) setRegisterError("Podany email jest już przypisany do innego konta")
+        else {
+            try {
+                const response = await fetch(`http://localhost:8080/users/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({email, password, username, isBanned: false, maps:[]}),
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('mapixelToken', data.token)
+                    router.push('/main');
+                } else if (response.status === 400) {
+                    setRegisterError("Niepoprawne dane")
+                }
+                else {
+                    setRegisterError("Błąd przy łączeniu z serwerem")
+                }
+            } catch (error) {
+                setRegisterError("Błąd przy łączeniu z serwerem")
+            }
         }
     }
     return(
@@ -74,7 +100,7 @@ export default function Page(){
                             <Field
                                 name="username"
                                 type="text"
-                                placeholder="username..."
+                                placeholder="nazwa użytkownika..."
                             />
                             {errors.username && touched.username ? (
                                 <div>{errors.username}</div>
@@ -84,7 +110,7 @@ export default function Page(){
                             <Field
                                 name="password"
                                 type="password"
-                                placeholder="password..."
+                                placeholder="hasło..."
                             />
                             {errors.password && touched.password ? (
                                 <div style={{color: 'red'}}>{errors.password}</div>
@@ -94,7 +120,7 @@ export default function Page(){
                             <Field
                                 name="repeatPassword"
                                 type="password"
-                                placeholder="repeat password..."
+                                placeholder="powtórz hasło..."
                             />
                             {errors.repeatPassword && touched.repeatPassword ? (
                                 <div>{errors.repeatPassword}</div>
@@ -104,7 +130,7 @@ export default function Page(){
                             <div>{errors.general}</div>
                         )}
                         <button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? 'Registering...' : 'Register!'}
+                            {isSubmitting ? 'Rejestracja...' : 'Zarejestruj się!'}
                         </button>
                     </Form>
                 )}
