@@ -3,14 +3,15 @@ import React, {useState} from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import {useRouter} from "next/navigation";
+import fetchUserId from "@/app/utils/fetchUserId";
 
 export default function Page(){
     const router = useRouter()
+    const [creating, setCreating] = useState(false)
 
     const grassId = "676db9320c30e67151090580"
     const waterId = "676db8e70c30e6715109057d"
     const sandId = "676db9090c30e6715109057f"
-
     const [mapError, setMapError] = useState("")
 
     const MapCreationSchema = Yup.object().shape({
@@ -36,8 +37,9 @@ export default function Page(){
                     Authorization: `Bearer ${localStorage.getItem("mapixelToken")}`
                 },
                 body: JSON.stringify(mapData)
-            });
+            })
             if (response.ok) {
+                setCreating(true)
                 const data = await response.json();
                 router.push(`/map/${data.id}`)
             } else if (response.status === 400) {
@@ -49,28 +51,9 @@ export default function Page(){
             setMapError("Błąd przy łączeniu z serwerem")
         }
     }
-    async function fetchUserId() {
-        try {
-            const response = await fetch(`http://localhost:8080/users/extract`,{
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem("mapixelToken")}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                return data.userId;
-            }
-            else {
-                router.push('/login')
-            }
-        } catch (error) {
-            router.push('/login')
-        }
-    }
+
     async function handleCreate({mapName, dimension, template}){
-        const userId = await fetchUserId()
+        const userId = await fetchUserId(router)
         let dimensionX = 0
         let dimensionY = 0
         switch (dimension){
@@ -108,7 +91,6 @@ export default function Page(){
                 setMapError("niepoprawne dane")
         }
         const mapToSend = {name: mapName, userId, dimensionX, dimensionY, fields: fieldId}
-        console.log(mapToSend)
         await fetchCreateMap(mapToSend)
     }
 
@@ -164,8 +146,10 @@ export default function Page(){
                         {errors.general && (
                             <div style={{color: 'red'}}>{errors.general}</div>
                         )}
-                        <button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? 'Creating...' : 'Stwórz!'}
+                        <button
+                            className="text-white hover:bg-green-600 bg-green-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                            type="submit" disabled={isSubmitting}>
+                            {creating ? 'Tworzenie w toku...' : 'Stwórz!'}
                         </button>
                     </Form>
                 )}
