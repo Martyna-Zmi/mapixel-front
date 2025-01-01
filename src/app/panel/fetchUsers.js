@@ -7,6 +7,9 @@ export default async function fetchUsers({username, router}) {
                 Authorization: `Bearer ${localStorage.getItem("mapixelToken")}`
             }
         });
+        if(response.status === 403){
+            router.push("/login")
+        }
         if (!response.ok) {
             router.push("/main")
         }
