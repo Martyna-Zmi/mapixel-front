@@ -15,7 +15,7 @@ export default function RenderMap(){
         gap: 0
     }
     return (
-        <div className="map-container">
+        <div id="map-container" className="map-container">
             <div style={mapGrid}>
                 {fields.map((element, key) => {
                     return (

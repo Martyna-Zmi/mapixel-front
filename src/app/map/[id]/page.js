@@ -9,6 +9,8 @@ import SaveButton from "@/app/map/[id]/saveButton";
 import LoadingMap from "@/app/utils/loadingMap";
 import UndoButton from "@/app/map/[id]/undoButton";
 import fetchMap from "@/app/utils/fetchMap";
+import VerifyMap from "@/app/map/[id]/verifyMap";
+import PreviewButton from "@/app/map/[id]/previewButton";
 
 export default function Page(){
     const params = useParams()
@@ -60,6 +62,7 @@ export default function Page(){
                     <div className="flex flex-row justify-center pt-3">
                         <SaveButton/>
                         <UndoButton/>
+                        <PreviewButton/>
                     </div>
 
                 </div>
@@ -69,6 +72,7 @@ export default function Page(){
                         <EditButton/>
                     </div>
                     <RenderMap/>
+                    <VerifyMap/>
                 </div>
 
 
