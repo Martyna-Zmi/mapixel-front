@@ -1,8 +1,9 @@
 "use client"
 import {Field, Form, Formik} from 'formik';
 import * as Yup from 'yup';
-import {useState} from "react";
+import React, {useState} from "react";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 
 export default function Page(){
@@ -76,66 +77,97 @@ export default function Page(){
         }
     }
     return(
-        <div>
-            <Formik
-                initialValues={{email: '', username: '', password: '', repeatPassword: ''}}
-                validationSchema={RegisterSchema}
-                onSubmit={async (values, {setSubmitting, setErrors}) => {
-                    await handleRegister(values);
-                }}
-            >
-                {({errors, touched, isSubmitting}) => (
-                    <Form>
-                        <div>
-                            <Field
-                                name="email"
-                                type="email"
-                                placeholder="email..."
-                            />
-                            {errors.email && touched.email ? (
-                                <div>{errors.email}</div>
-                            ) : null}
-                        </div>
-                        <div>
-                            <Field
-                                name="username"
-                                type="text"
-                                placeholder="nazwa użytkownika..."
-                            />
-                            {errors.username && touched.username ? (
-                                <div>{errors.username}</div>
-                            ) : null}
-                        </div>
-                        <div>
-                            <Field
-                                name="password"
-                                type="password"
-                                placeholder="hasło..."
-                            />
-                            {errors.password && touched.password ? (
-                                <div style={{color: 'red'}}>{errors.password}</div>
-                            ) : null}
-                        </div>
-                        <div>
-                            <Field
-                                name="repeatPassword"
-                                type="password"
-                                placeholder="powtórz hasło..."
-                            />
-                            {errors.repeatPassword && touched.repeatPassword ? (
-                                <div>{errors.repeatPassword}</div>
-                            ) : null}
-                        </div>
-                        {errors.general && (
-                            <div>{errors.general}</div>
-                        )}
-                        <button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? 'Rejestracja...' : 'Zarejestruj się!'}
-                        </button>
-                    </Form>
-                )}
-            </Formik>
-            <p>{registerError}</p>
+        <div className="flex flex-row justify-center m-10">
+            <div className="border border-gray-300 p-5 w-80">
+                <h1 className="font-semibold text-center">Zarejestruj się</h1>
+                <Formik
+                    initialValues={{email: '', username: '', password: '', repeatPassword: ''}}
+                    validationSchema={RegisterSchema}
+                    onSubmit={async (values, {setSubmitting, setErrors}) => {
+                        await handleRegister(values);
+                    }}
+                >
+                    {({errors, touched, isSubmitting}) => (
+                        <Form>
+                            <label htmlFor="large-input"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white pt-2">
+                                Adres e-mail
+                            </label>
+                            <div>
+                                <Field
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-60"
+                                    name="email"
+                                    type="email"
+                                    placeholder="email..."
+                                />
+                                {errors.email && touched.email ? (
+                                    <div>{errors.email}</div>
+                                ) : null}
+                            </div>
+                            <label htmlFor="large-input"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white pt-2">
+                                Nazwa użytkownika
+                            </label>
+                            <div>
+                                <Field
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-60"
+                                    name="username"
+                                    type="text"
+                                    placeholder="nazwa użytkownika..."
+                                />
+                                {errors.username && touched.username ? (
+                                    <div>{errors.username}</div>
+                                ) : null}
+                            </div>
+                            <label htmlFor="large-input"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white pt-2">
+                                Hasło
+                            </label>
+                            <div>
+                                <Field
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-60"
+                                    name="password"
+                                    type="password"
+                                    placeholder="hasło..."
+                                />
+                                {errors.password && touched.password ? (
+                                    <div className="text-center">{errors.password}</div>
+                                ) : null}
+                            </div>
+                            <label htmlFor="large-input"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white pt-2">
+                                Powtórz hasło
+                            </label>
+                            <div>
+                                <Field
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-60"
+                                    name="repeatPassword"
+                                    type="password"
+                                    placeholder="powtórz hasło..."
+                                />
+                                {errors.repeatPassword && touched.repeatPassword ? (
+                                    <div>{errors.repeatPassword}</div>
+                                ) : null}
+                            </div>
+                            {errors.general && (
+                                <div>{errors.general}</div>
+                            )}
+                            <div className="flex flex-row justify-center m-2">
+                                <button
+                                    type="submit" disabled={isSubmitting}
+                                    className="text-white hover:bg-green-600 bg-green-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                                    {isSubmitting ? 'Rejestracja...' : 'Zarejestruj się!'}
+                                </button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+                <p>{registerError}</p>
+                <p className="text-center">Masz już konto?</p>
+                <div className="flex flex-row justify-center">
+                <Link className="text-green-800 font-bold underline" href="/register">Zaloguj się!</Link>
+                </div>
+            </div>
         </div>
     )
 }

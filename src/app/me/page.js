@@ -49,15 +49,20 @@ export default function Page() {
 
     if(userWithMaps!==undefined){
         return(
-            <>
-                <h1>Cześć, {userWithMaps.username}</h1>
-                <p>{message}</p>
-                <p>Oto twoje mapy</p>
-                <p>{userWithMaps.maps.length===0? "Hmmm. trochę tu pusto...": ""}</p>
-                <RenderAllMaps setDeleted={setDeleted} setUserWithMaps={setUserWithMaps} maps={userWithMaps.maps} userWithMaps={userWithMaps}/>
-                <CreateButton/>
-                <Link className="text-green-800 font-bold underline block" href="/main">Powrót do strony głównej</Link>
-            </>
+            <div>
+                <h1 className="font-semibold text-2xl text-center">Cześć, {userWithMaps.username}</h1>
+                <div className="flex flex-row justify-center">
+                    <Link className="text-green-800 font-bold underline block" href="/main">
+                        Powrót do strony głównej
+                    </Link>
+                </div>
+                <p className="text-center text-green-900 italic">{message}</p>
+                <p className="text-center font-semibold p-3">Oto twoje mapy:</p>
+                <p className="text-center text-green-900">{userWithMaps.maps.length === 0 ? "Hmmm... trochę tu pusto!" : ""}</p>
+                <RenderAllMaps setDeleted={setDeleted} setUserWithMaps={setUserWithMaps} maps={userWithMaps.maps}
+                               userWithMaps={userWithMaps}
+                />
+            </div>
         )
     }
     return (

@@ -62,16 +62,16 @@ export default function Page(){
                 dimensionY = 10
                 break
             case '2':
-                dimensionX = 10
-                dimensionY = 15
+                dimensionX = 15
+                dimensionY = 10
                 break
             case '3':
-                dimensionX = 15
-                dimensionY = 20
+                dimensionX = 20
+                dimensionY = 10
                 break
             case '4':
                 dimensionX = 20
-                dimensionY = 20
+                dimensionY = 15
                 break
             default:
                 setMapError("niepoprawne dane")
@@ -95,66 +95,83 @@ export default function Page(){
     }
 
     return (
-        <div>
-            <Formik
-                initialValues={{mapName: '', dimension: '', template: ''}}
-                validationSchema={MapCreationSchema}
-                onSubmit={async (values, {setSubmitting, setErrors}) => {
-                    await handleCreate(values)
-                }}
-            >
-                {({errors, touched, isSubmitting}) => (
-                    <Form>
-                        <div>
-                            <Field
-                                name="mapName"
-                                type="text"
-                                placeholder="nazwa mapy..."
-                            />
-                            {errors.mapName && touched.mapName ? (
-                                <div style={{color: 'red'}}>{errors.mapName}</div>
-                            ) : null}
-                        </div>
+        <div className="flex flex-row justify-center m-10">
+            <div className="border border-gray-300 w-fit p-5">
+                <h1 className="font-semibold text-center">Stwórz nową mapę</h1>
+                <Formik
+                    initialValues={{mapName: '', dimension: '', template: ''}}
+                    validationSchema={MapCreationSchema}
+                    onSubmit={async (values, {setSubmitting, setErrors}) => {
+                        await handleCreate(values)
+                    }}
+                >
+                    {({errors, touched, isSubmitting}) => (
+                        <Form>
+                            <label htmlFor="large-input"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Nazwa mapy
+                            </label>
+                            <div>
+                                <Field
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
+                                    name="mapName"
+                                    type="text"
+                                    placeholder="nazwa mapy..."
+                                />
+                                {errors.mapName && touched.mapName ? (
+                                    <div style={{color: 'red'}}>{errors.mapName}</div>
+                                ) : null}
+                            </div>
+                            <label htmlFor="large-input"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Wybierz rozmiar mapy:
+                            </label>
+                            <div
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                <Field as="select" name="dimension">
+                                    <option value="">Wybierz...</option>
+                                    <option value="1">Mała - 10 x 10</option>
+                                    <option value="2">Średnia - 15 x 10</option>
+                                    <option value="3">Duża - 20 x 10</option>
+                                    <option value="4">Giga - 20 x 15</option>
+                                </Field>
+                                {errors.dimension && touched.dimension ? (
+                                    <div style={{color: 'red'}}>{errors.dimension}</div>
+                                ) : null}
+                            </div>
+                            <label htmlFor="large-input"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Wybierz szablon:
+                            </label>
+                            <div
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5">
+                                <Field as="select" name="template">
+                                    <option value="">Wybierz...</option>
+                                    <option value="1">Łąka</option>
+                                    <option value="2">Ocean</option>
+                                    <option value="3">Pustynia</option>
+                                </Field>
+                                {errors.template && touched.template ? (
+                                    <div style={{color: 'red'}}>{errors.template}</div>
+                                ) : null}
+                            </div>
 
-                        <div>
-                            <label>Wybierz wymiary mapy:</label>
-                            <Field as="select" name="dimension">
-                                <option value="">Wybierz...</option>
-                                <option value="1">Mała - 10 x 10</option>
-                                <option value="2">Średnia - 10 x 15</option>
-                                <option value="3">Duża - 15 x 20</option>
-                                <option value="4">Giga - 20 x 20</option>
-                            </Field>
-                            {errors.dimension && touched.dimension ? (
-                                <div style={{color: 'red'}}>{errors.dimension}</div>
-                            ) : null}
-                        </div>
-
-                        <div>
-                            <label>Wybierz szablon:</label>
-                            <Field as="select" name="template">
-                                <option value="">Wybierz...</option>
-                                <option value="1">Łąka</option>
-                                <option value="2">Ocean</option>
-                                <option value="3">Pustynia</option>
-                            </Field>
-                            {errors.template && touched.template ? (
-                                <div style={{color: 'red'}}>{errors.template}</div>
-                            ) : null}
-                        </div>
-
-                        {errors.general && (
-                            <div style={{color: 'red'}}>{errors.general}</div>
-                        )}
-                        <button
-                            className="text-white hover:bg-green-600 bg-green-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                            type="submit" disabled={isSubmitting}>
-                            {creating ? 'Tworzenie w toku...' : 'Stwórz!'}
-                        </button>
-                    </Form>
-                )}
-            </Formik>
-            <p>{mapError}</p>
+                            {errors.general && (
+                                <div style={{color: 'red'}}>{errors.general}</div>
+                            )}
+                            <div className="flex flex-row justify-center m-2">
+                                <button
+                                    className="text-white hover:bg-green-600 bg-green-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                                    type="submit" disabled={isSubmitting}>
+                                    {creating ? 'Tworzenie w toku...' : 'Stwórz!'}
+                                </button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+                <p>{mapError}</p>
+                <h3>Od stworzenia własnego świata dzieli Ciebie tylko kilka kliknięć!</h3>
+            </div>
         </div>
     )
 }

@@ -3,35 +3,31 @@
 import {useContext, useEffect, useState} from "react";
 import {MapContext} from "@/app/map/[id]/mapProvider";
 
-export default function RenderOption({element, index}){
-    const {toolField, setToolField} = useContext(MapContext)
+export default function EditOption({element, index}){
+    const {toolField, setToolField, fieldCatalog, category} = useContext(MapContext)
     const [isClicked, setIsClicked] = useState(false)
 
     function handleClick(){
-        setIsClicked(true);
-        setToolField(index)
+        setIsClicked(true)
+        const indexOfField = fieldCatalog.findIndex(field=>field.id===element.id)
+        setToolField(indexOfField)
     }
     useEffect(() => {
-        if(toolField !== index){
+        if(toolField !== fieldCatalog.findIndex(field=>field.id===element.id)){
             setIsClicked(false)
         }
     }, [toolField])
-
     useEffect(() => {
-        if(index === 0){
-            setIsClicked(true)
-        }
-    }, [])
-
+        if(index===0) handleClick()
+    }, [category]);
     return(
-        <>
-            <h4>{element.name}</h4>
+        <div>
             <img onClick={handleClick}
                  alt="field edit option"
-                 width="75px"
-                 height="75px"
+                 width="55px"
+                 height="55px"
                  className={isClicked ? 'clicked' : ''}
                  src={`/fields/${element.imgSrc}.png`}/>
-        </>
+        </div>
     )
 }

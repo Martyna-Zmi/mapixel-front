@@ -24,13 +24,13 @@ export default function DeleteButton({map, setUserWithMaps, userWithMaps, setDel
         }
     }
     return(
-        <div>
+        <>
             <button
                 onClick={handleClick}
                 className="text-white hover:bg-purple-700 bg-teal-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                 Usuń mapę
             </button>
             <p>{error}</p>
-        </div>
+        </>
     )
 }

@@ -6,8 +6,8 @@ export default function RenderField({element}){
         <>
             <img
                  alt="map field"
-                 width="75px"
-                 height="75px"
+                 width="60px"
+                 height="60px"
                  src={`/fields/${element.imgSrc}.png`}/>
         </>
     )

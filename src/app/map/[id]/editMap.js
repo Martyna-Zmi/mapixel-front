@@ -1,19 +1,27 @@
-import {useContext} from "react";
+"use client"
+import {useContext, useMemo} from "react";
 import {MapContext} from "@/app/map/[id]/mapProvider";
-import RenderOption from "@/app/map/[id]/editOption";
+import EditOption from "@/app/map/[id]/editOption";
+import CategorySelect from "@/app/map/[id]/categorySelect";
 
 export default function EditMap(){
-    const {fieldCatalog} = useContext(MapContext)
+    const {fieldCatalog, category} = useContext(MapContext)
 
+    const filteredFields = useMemo(()=>{
+        return [...fieldCatalog].filter(field=>field.category===category)
+    },[category])
     return(
-        <div>
-            {fieldCatalog.map((element, key) => {
-                return(
-                    <div key={key} id={key} style={{padding:0, margin:0, display: "inlinineBlock", width: "fitContent", height: "fitContent"}}>
-                        <RenderOption element={element} index={key}/>
-                    </div>
-                )
-            })}
+        <div className="toolbox">
+            <CategorySelect/>
+            <div className="bg-gray-50 px-2 w-fit grid grid-cols-7">
+                {filteredFields.map((element, key) => {
+                    return(
+                        <div key={key} className="p-0 m-0 inline-block w-fit h-fit">
+                            <EditOption element={element} index={key}/>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }

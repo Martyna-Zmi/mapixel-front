@@ -14,3 +14,13 @@
     width: 40%;
     margin: 1% auto;
 }
+.toolbox{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+.map-container{
+    width: 60%;
+    height: 520px;
+    overflow: scroll;
+}

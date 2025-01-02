@@ -47,22 +47,34 @@ export default function Page(){
     if(error){
         router.push('/not-found.js');
     }
-    if(map!==null){
+    if(!loading && map!==null){
         return(
             <div>
-                <h1>Mapa: {map.name}</h1>
-                <p>{unsavedChanges? "Masz niezapisane zmiany. Pamiętaj o regularnym zapisaniu zmian, aby nie utracić swojej mapy": "Stan mapy jest aktualny"}</p>
-                <h2>Obecny kafelek: {selectedField}</h2>
-                <h2>Obecne narzędzie: {toolField}</h2>
-                <EditButton/>
-                <SaveButton/>
-                <UndoButton/>
-                <RenderMap/>
-                <EditMap/>
+                <div>
+                    <h1 className="text-center font-bold text-2xl">
+                        {map.name}
+                    </h1>
+                    <p className={unsavedChanges? "text-center text-red-900 font-semibold": "text-center text-gray-700"}>
+                        {unsavedChanges ? "Masz niezapisane zmiany. Pamiętaj o regularnym zapisaniu zmian, aby nie utracić swojej mapy!" : "Stan mapy jest aktualny"}
+                    </p>
+                    <div className="flex flex-row justify-center pt-3">
+                        <SaveButton/>
+                        <UndoButton/>
+                    </div>
+
+                </div>
+                <div className="flex">
+                    <div>
+                        <EditMap/>
+                        <EditButton/>
+                    </div>
+                    <RenderMap/>
+                </div>
+
+
             </div>
         )
-    }
-   else return (
-       <LoadingMap/>
+    } else return (
+        <LoadingMap/>
     )
 }

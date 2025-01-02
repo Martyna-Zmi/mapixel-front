@@ -15,14 +15,17 @@ export default function RenderMap(){
         gap: 0
     }
     return (
-        <div style={mapGrid}>
-            {fields.map((element, key) => {
-                return(
-                <div key={key} id={key} style={{padding:0, margin:0, display: "inlinineBlock", width: "fitContent", height: "fitContent"}}>
-                    <RenderField element={element} index={key}/>
-                </div>
-                )
-            })}
+        <div className="map-container">
+            <div style={mapGrid}>
+                {fields.map((element, key) => {
+                    return (
+                        <div key={key} id={key} className="p-0 m-0 inline-block w-fit h-fit">
+                            <RenderField element={element} index={key}/>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
+
     )
 }

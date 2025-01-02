@@ -23,12 +23,12 @@ export default function Page(){
                 if (!response.ok) {
                     router.push('/login')
                 }
-                document.getElementById('thymeleaf-content').innerHTML = await response.text();
+                document.getElementById('thymeleaf-content').innerHTML = await response.text()
             } catch (error) {
                 router.push('/login')
             }
         }
-        fetchThymeleafPage();
+        fetchThymeleafPage()
         setLoading(false)
     }, []);
 
@@ -44,7 +44,9 @@ export default function Page(){
                 <CreateButton/>
                 <ViewMapsButton/>
             </div>
-            <div id="thymeleaf-content"></div>
+            <div id="thymeleaf-content">
+                <LoadingScreen/>
+            </div>
         </div>
     );
 };

@@ -9,8 +9,8 @@ export default function RenderMap(){
     const {map, fields} = useContext(MapContext)
     const mapGrid = {
         display: "grid",
-        gridTemplateColumns: `repeat(${map.dimensionX}, 75px)`,
-        gridTemplateRows: `repeat(map.${map.dimensionY}, 75px)`,
+        gridTemplateColumns: `repeat(${map.dimensionX}, 60px)`,
+        gridTemplateRows: `repeat(map.${map.dimensionY}, 60px)`,
         gridRowGap: 0,
         gridColumnGap: 0,
         gap: 0

@@ -4,7 +4,7 @@ import {useContext, useEffect, useState} from "react";
 import {MapContext} from "@/app/map/[id]/mapProvider";
 import './map.css';
 
-export default function RenderField({element, index}){ //rendering the field image
+export default function RenderField({element, index}){
     const {selectedField, setSelectedField} = useContext(MapContext)
     const [isClicked, setIsClicked] = useState(false)
 

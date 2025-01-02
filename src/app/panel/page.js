@@ -52,7 +52,7 @@ export default function Page(){
                 </div>
             </div>
 
-        );
+        )
     }
     return (
         <LoadingScreen/>

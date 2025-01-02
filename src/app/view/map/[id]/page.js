@@ -28,9 +28,10 @@ export default function Page(){
     if(map!==null){
         return(
             <div>
-                <h1>Mapa: {map.name}</h1>
-                <h2>{map.dimensionX} x {map.dimensionY}</h2>
-                <RenderMap/>
+                <h1 className="font-semibold text-2xl text-center">{map.name}</h1>
+                <div className="flex flex-row justify-center">
+                    <RenderMap/>
+                </div>
             </div>
         )
     }
