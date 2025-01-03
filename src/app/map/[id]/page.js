@@ -1,5 +1,5 @@
 "use client"
-import {useCallback, useContext, useEffect, useState} from "react"
+import {use, useCallback, useContext, useEffect, useState} from "react"
 import {MapContext} from "@/app/map/[id]/mapProvider";
 import {useParams, useRouter} from "next/navigation";
 import RenderMap from "@/app/map/[id]/renderMap";
@@ -18,10 +18,11 @@ export default function Page(){
     const router = useRouter()
 
     const {map, setMap, setFields, setFieldCatalog, toolField, selectedField, unsavedChanges, setHistory} = useContext(MapContext)
-    const [loading, setLoading] = useState(true);
+    const [mapLoading, setMapLoading] = useState(true);
+    const [fieldLoading, setFieldLoading] = useState(true)
     const [error, setError] = useState(false)
 
-    const fetchFields = useCallback(async () => {
+    const fetchFields = async () => {
         try {
             const response = await fetch(`http://localhost:8080/fields`,{
                 method: 'GET',
@@ -37,19 +38,21 @@ export default function Page(){
             setFieldCatalog(result)
         } catch (err) {
             setError(true);
-        }}, [])
+        }}
 
     useEffect(() => {
+        setMap(null)
+        setFields([])
         setHistory([])
-        fetchMap({mapId, setError, setMap, setFields})
-        fetchFields()
-        setLoading(false)
+        fetchMap({mapId, setError, setMap, setFields}).then(()=>setMapLoading(false))
+        fetchFields().then(() => setFieldLoading(false))
+
     }, []);
 
     if(error){
         router.push('/not-found.js');
     }
-    if(!loading && map!==null){
+    if(!mapLoading && map!==null && !fieldLoading){
         return(
             <div>
                 <div>
@@ -62,7 +65,6 @@ export default function Page(){
                     <div className="flex flex-row justify-center pt-3">
                         <SaveButton/>
                         <UndoButton/>
-                        <PreviewButton/>
                     </div>
 
                 </div>
@@ -70,6 +72,7 @@ export default function Page(){
                     <div>
                         <EditMap/>
                         <EditButton/>
+                        <PreviewButton/>
                     </div>
                     <RenderMap/>
                     <VerifyMap/>

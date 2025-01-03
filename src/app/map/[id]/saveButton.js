@@ -12,7 +12,7 @@ export default function SaveButton(){
         setMap(updatedMap);
         await fetchSaveMap(updatedMap)
         setUnsavedChanges(false)
-        alert("Zapisano stan mapy")
+        //alert("Zapisano stan mapy")
     }
 
     const fetchSaveMap = async (updatedMap) => {

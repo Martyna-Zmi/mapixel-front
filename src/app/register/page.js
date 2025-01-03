@@ -26,7 +26,7 @@ export default function Page(){
         repeatPassword: Yup.string()
             .oneOf([Yup.ref('password')], 'Hasła muszą być takie same')
             .required('Proszę potwierdzić hasło'),
-    });
+    })
     async function checkIsEmailInUse(emailToCheck) {
         try {
             const response = await fetch(`http://localhost:8080/users/emailfree`,{

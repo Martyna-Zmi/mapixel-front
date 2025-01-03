@@ -6,6 +6,7 @@ import CreateButton from "@/app/main/createButton";
 import RenderAllMaps from "@/app/me/renderAllMaps";
 import Link from "next/link";
 import LoadingScreen from "@/app/utils/loadingScreen";
+import ChangePassword from "@/app/me/changePassword";
 
 export default function Page() {
     const router = useRouter()
@@ -62,6 +63,9 @@ export default function Page() {
                 <RenderAllMaps setDeleted={setDeleted} setUserWithMaps={setUserWithMaps} maps={userWithMaps.maps}
                                userWithMaps={userWithMaps}
                 />
+                <h2 className="text-center">Zarządzanie kontem:</h2>
+                <ChangePassword/>
+
             </div>
         )
     }

@@ -18,10 +18,10 @@ export default function VerifyMap(){
     function verify(){
         const spawnNumber = fields.filter(field=>field.name==="spawn").length
         setSpawn(spawnNumber>0)
-        setChest(fields.filter(field=>field.name==="chest").length>=spawnNumber)
-        setAnimal(fields.filter(field=>field.category==="animal").length>=spawnNumber)
-        setWater(fields.filter(field=>field.name==="water").length>=spawnNumber)
-        setCampfire(fields.filter(field=>field.name==="campfire").length>=spawnNumber)
+        setChest(fields.filter(field=>field.name==="chest").length>=spawnNumber && fields.filter(field=>field.name==="chest").length>=1)
+        setAnimal(fields.filter(field=>field.category==="animal").length>=spawnNumber && fields.filter(field=>field.category==="animal").length>=1)
+        setWater(fields.filter(field=>field.name==="water").length>=spawnNumber && fields.filter(field=>field.name==="water").length>=1)
+        setCampfire(fields.filter(field=>field.name==="campfire").length>=spawnNumber && fields.filter(field=>field.name==="campfire").length>=1)
     }
     function DisplayCheck({boolValue}){
         return boolValue? <FaCircleCheck size={20}/>: ""
