@@ -1,5 +1,7 @@
 # Front-end side of an map editor application
 
+The repository with Backend is [here](https://github.com/Martyna-Zmi/mapixel-back)
+
 ## Tech stack
 * React
 * Next.js
